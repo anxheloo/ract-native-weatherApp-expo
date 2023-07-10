@@ -9,13 +9,15 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import IconText from "../components/IconText";
+import moment from "moment";
 
-const City = () => {
+const City = ({ weatherData }) => {
   const {
     container,
     imageBackground,
     city,
-    country,
+    countryStyle,
     cityText,
     populationWrapper,
     populationText,
@@ -23,25 +25,39 @@ const City = () => {
     riseSetText,
   } = styles;
 
+  const { name, country, population, sunrise, sunset } = weatherData;
+
   return (
     <SafeAreaView style={container}>
       <ImageBackground
         style={imageBackground}
         source={require("../.././assets/city-background.jpg")}
       >
-        <Text style={[city, cityText]}>London</Text>
-        <Text style={[country, cityText]}>UK</Text>
+        <Text style={[city, cityText]}>{name}</Text>
+        <Text style={[countryStyle, cityText]}>{country}</Text>
         <View style={populationWrapper}>
-          <Feather name="user" size={50} color="red"></Feather>
-          <Text style={populationText}>8000</Text>
+          <IconText
+            iconName={"user"}
+            iconColor={"red"}
+            bodyText={`Population: ${population}`}
+            bodyTextStyles={populationText}
+          ></IconText>
         </View>
 
         <View style={riseSetWrapper}>
-          <Feather name="sunrise" size={50} color="white"></Feather>
-          <Text style={riseSetText}>10:46:58am</Text>
+          <IconText
+            iconName={"sunrise"}
+            iconColor={"white"}
+            bodyText={moment(sunrise).format("h:mm:ss a")}
+            bodyTextStyles={riseSetText}
+          ></IconText>
 
-          <Feather name="sunset" size={50} color="white"></Feather>
-          <Text style={riseSetText}>17:28:15pm</Text>
+          <IconText
+            iconName={"sunset"}
+            iconColor={"white"}
+            bodyText={moment(sunset).format("h:mm:ss a")}
+            bodyTextStyles={riseSetText}
+          ></IconText>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -51,7 +67,7 @@ const City = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
   },
 
   imageBackground: {
@@ -61,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
 
-  country: {
+  countryStyle: {
     fontSize: 30,
   },
 
@@ -83,7 +99,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginLeft: 7.5,
     color: "red",
-    fontWeight: "bold",
   },
 
   riseSetWrapper: {
@@ -96,7 +111,6 @@ const styles = StyleSheet.create({
   riseSetText: {
     fontSize: 20,
     color: "white",
-    fontWeight: "bold",
   },
 });
 
